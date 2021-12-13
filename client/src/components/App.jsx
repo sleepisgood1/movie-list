@@ -31,9 +31,7 @@ class App extends React.Component {
     }
   }
   onSubmitOfAddMovie(movieToAdd) {
-    var newMovieList = this.state.movies
-    newMovieList.push(movieToAdd)
-    console.log(newMovieList)
+    var newMovieList = this.state.movies.concat([movieToAdd])
     this.setState({
       movies: newMovieList
     })
