@@ -1,22 +1,18 @@
 import React from 'react';
 import MovieList from './MovieList.jsx'
 import SearchForm from './SearchForm.jsx'
+import AddMovieForm from './AddMovieForm.jsx'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       isSearched: false,
-      movies: [
-        {title: 'Mean Girls'},
-        {title: 'Hackers'},
-        {title: 'The Grey'},
-        {title: 'Sunshine'},
-        {title: 'Ex Machina'},
-      ],
+      movies: [],
       filteredMovies: []
     }
     this.onSubmitOfSearch = this.onSubmitOfSearch.bind(this)
+    this.onSubmitOfAddMovie = this.onSubmitOfAddMovie.bind(this)
   }
   onSubmitOfSearch(input) {
     if (!input) {
@@ -34,6 +30,15 @@ class App extends React.Component {
       })
     }
   }
+  onSubmitOfAddMovie(movieToAdd) {
+    var newMovieList = this.state.movies
+    newMovieList.push(movieToAdd)
+    console.log(newMovieList)
+    this.setState({
+      movies: newMovieList
+    })
+  }
+
   matchMovie(movies, input) {
     var matchedMovies = [];
       for (let i=0;i<movies.length;i++) {
@@ -48,6 +53,7 @@ class App extends React.Component {
     if (this.state.isSearched && this.state.filteredMovies.length>0) {
       return(
         <div>
+          <AddMovieForm search={this.onSubmitOfAddMovie}/>
           <SearchForm search={this.onSubmitOfSearch}/>
           <MovieList allMovies={this.state.filteredMovies}/>
         </div>
@@ -55,6 +61,7 @@ class App extends React.Component {
     } else if (this.state.isSearched && this.state.filteredMovies.length===0) {
       return (
         <div>
+          <AddMovieForm search={this.onSubmitOfAddMovie}/>
           <SearchForm search={this.onSubmitOfSearch}/>
           <h1>No Movies Were Found!</h1>
           <MovieList allMovies={this.state.movies}/>
@@ -63,6 +70,7 @@ class App extends React.Component {
     } else {
       return (
         <div>
+          <AddMovieForm search={this.onSubmitOfAddMovie}/>
           <SearchForm search={this.onSubmitOfSearch}/>
           <MovieList allMovies={this.state.movies}/>
         </div>
