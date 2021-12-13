@@ -19,13 +19,20 @@ class App extends React.Component {
     this.onSubmitOfSearch = this.onSubmitOfSearch.bind(this)
   }
   onSubmitOfSearch(input) {
-    console.log(input)
-    // event.preventDefault();
-    var filteredMovie = this.matchMovie(this.state.movies, input)
-    this.setState({
-      isSearched: !this.state.isSearched,
-      filteredMovies: filteredMovie
-    })
+    if (!input) {
+      this.setState({
+        isSearched: !this.state.isSearched,
+        filteredMovies: this.state.movies
+      })
+    } else {
+      // console.log(input)
+      // event.preventDefault();
+      var filteredMovie = this.matchMovie(this.state.movies, input)
+      this.setState({
+        isSearched: !this.state.isSearched,
+        filteredMovies: filteredMovie
+      })
+    }
   }
   matchMovie(movies, input) {
     var matchedMovies = [];
@@ -38,11 +45,19 @@ class App extends React.Component {
   }
 
   render () {
-    if (this.state.isSearched) {
+    if (this.state.isSearched && this.state.filteredMovies.length>0) {
       return(
         <div>
-          <SearchForm />
+          <SearchForm search={this.onSubmitOfSearch}/>
           <MovieList allMovies={this.state.filteredMovies}/>
+        </div>
+      )
+    } else if (this.state.isSearched && this.state.filteredMovies.length===0) {
+      return (
+        <div>
+          <SearchForm search={this.onSubmitOfSearch}/>
+          <h1>No Movies Were Found!</h1>
+          <MovieList allMovies={this.state.movies}/>
         </div>
       )
     } else {
